@@ -10,10 +10,6 @@ Features
 
 * Simple FlatContent model
 * Template tag for pulling FlatContent into templates
-
-Goals / TODO
-============
-
 * Caching of FlatContent for performance
 
 Installation

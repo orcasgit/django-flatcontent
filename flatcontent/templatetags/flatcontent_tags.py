@@ -9,11 +9,7 @@ class FlatContentNode(template.Node):
         self.slug = slug
 
     def render(self, context):
-        try:
-            fc = FlatContent.objects.get(slug=self.slug)
-        except FlatContent.DoesNotExist:
-            return ''
-        return fc.content
+        return FlatContent.get(slug=self.slug)
 
 def do_flatcontent(parser, token):
     """
