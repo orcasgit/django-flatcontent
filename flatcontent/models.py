@@ -1,9 +1,6 @@
 from django.core.cache import cache
 from django.db import models
 
-def key_from_slug(slug):
-    return 'flatcontent_%s' % (slug)
-
 class FlatContent(models.Model):
     slug = models.SlugField(max_length=255, unique=True, help_text='The name by which the template author retrieves this content.')
     content = models.TextField()
@@ -16,16 +13,20 @@ class FlatContent(models.Model):
 
     def save(self):
         super(FlatContent, self).save()
-        cache.delete(key_from_slug(self.slug))
+        cache.delete(self.key_from_slug(self.slug))
 
-    # CLASS METHODS WITH CACHING
+    # Helper method to get key for caching
+    def key_from_slug(slug):
+        return 'flatcontent_%s' % (slug)
+    key_from_slug = staticmethod(key_from_slug)
 
+    # Class method with caching
     def get(cls, slug):
         """
         Checks if key is in cache, otherwise performs database lookup and
         inserts into cache.
         """
-        key = key_from_slug(slug)
+        key = cls.key_from_slug(slug)
         cache_value = cache.get(key)
         if cache_value:
             return cache_value
