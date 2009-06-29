@@ -15,8 +15,8 @@ Features
 Installation
 ============
 
-1. Add the ``flatpages`` directory to your Python path.
-2. Add ``flatpages`` to your ``INSTALLED_APPS``.
+1. Add the ``flatcontent`` directory to your Python path.
+2. Add ``flatcontent`` to your ``INSTALLED_APPS``.
 3. Run the command ``manage.py syncdb`` to install the models.
 
 Usage
