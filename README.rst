@@ -33,3 +33,13 @@ the templates using the provided template tags::
 The above will perform a slug lookup on the text "footer" and return the
 content associated with that slug.
 
+You can also put the content into a template variable for passing to other
+template tags or filters.  For example, getting the footer and processing the
+text through the `textile` filter::
+
+    {% load flatcontent_tags markup %}
+    <div id="footer">
+        {% flatcontent footer as content %}
+        {{ content|textile }}
+    </div>
+
