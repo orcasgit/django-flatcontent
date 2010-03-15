@@ -15,6 +15,10 @@ class FlatContent(models.Model):
         super(FlatContent, self).save()
         cache.delete(self.key_from_slug(self.slug))
 
+    def delete(self):
+        cache.delete(self.key_from_slug(self.slug))
+        super(FlatContent, self).delete()
+
     # Helper method to get key for caching
     def key_from_slug(slug):
         return 'flatcontent_%s' % (slug)
