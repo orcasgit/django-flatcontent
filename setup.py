@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 
+required = [line for line in open('requirements.txt').read().split("\n")]
+
 setup(
     name='django-flatcontent',
     version=__import__('flatcontent').__version__,
@@ -7,7 +9,8 @@ setup(
     long_description=open('README.rst').read(),
     author='Oregon Center for Applied Science',
     author_email='support@orcasinc.com',
-    url='http://github.com/orcasgit/django-flatcontent/tree',
+    url='http://github.com/orcasgit/django-flatcontent',
+    install_requires=["distribute"] + required,
     download_url='http://github.com/orcasgit/django-flatcontent/downloads',
     license='BSD',
     packages=find_packages(exclude=['ez_setup']),
