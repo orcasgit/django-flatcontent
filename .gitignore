@@ -1,5 +1,7 @@
 *.pyc
 *~
+.tox
+env
 build
 dist
 django_flatcontent.egg-info

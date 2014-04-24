@@ -1,0 +1,6 @@
+-r base.txt
+
+git+https://github.com/brad/django-nose.git@django_1.7#egg=django-nose
+coverage==3.7.1
+factory_boy==2.3.1
+tox==1.7.1
