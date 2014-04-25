@@ -35,12 +35,14 @@ def do_flatcontent(parser, token):
     len_bits = len(bits)
     varname = None
     if len_bits not in (2, 4):
-        raise template.TemplateSyntaxError, "The flatcontent tag requires either 1 or 3 arguments"
+        raise template.TemplateSyntaxError("The flatcontent tag requires "
+                                           "either 1 or 3 arguments")
     if len_bits == 2:
         return FlatContentNode(bits[1])
     elif len_bits == 4:
         if bits[2] != 'as':
-            raise TemplateSyntaxError("The second argument to flatcontent tag must be 'as'")
+            raise TemplateSyntaxError("The second argument to flatcontent "
+                                      "tag must be 'as'")
         return FlatContentNode(bits[1], bits[3])
 
 register.tag('flatcontent', do_flatcontent)
