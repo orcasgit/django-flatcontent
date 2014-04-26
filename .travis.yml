@@ -22,7 +22,7 @@ env:
   - TOX_ENV=py26-1.4.X
 install:
   - pip install coveralls
-  - pip install -r requirements/test.txt
+  - pip install tox
 script:
   - tox -e $TOX_ENV -- --with-coverage --cover-package=flatcontent
   - coverage report -m
