@@ -2,6 +2,16 @@
 Django FlatContent
 ==================
 
+.. image:: https://travis-ci.org/orcasgit/django-flatcontent.svg
+   :target: https://travis-ci.org/orcasgit/django-flatcontent
+   :alt: Travis Status
+.. image:: https://coveralls.io/repos/orcasgit/django-flatcontent/badge.png
+   :target: https://coveralls.io/r/orcasgit/django-flatcontent
+   :alt: Coverage Status
+.. image:: https://requires.io/github/orcasgit/django-flatcontent/requirements.png?branch=master
+   :target: https://requires.io/github/orcasgit/django-flatcontent/requirements/?branch=master
+   :alt: Requirements Status
+
 Django FlatContent is intended as a flatpages-like app but for smaller chunks
 of content that can be edited in the Django admin.
 
