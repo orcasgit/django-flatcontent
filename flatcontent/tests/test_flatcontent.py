@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.template import TemplateSyntaxError
 from django.test import TestCase
 from nose.tools import eq_
 
@@ -8,10 +9,16 @@ from .basefactory import FlatContentFactory
 
 class TestFlatContent(TestCase):
 
-    def test_template_tag(self):
-        flatcontent = FlatContentFactory.create(
+    def setUp(self):
+        self.flat_content = FlatContentFactory.create(
             slug='test-content', content='test content')
-        flatcontent.save()
-        eq_(FlatContent.objects.count(), 1)
-        resp = self.client.get(reverse('show_flatcontent'))
+        self.flat_content.save()
+
+    def test_template_tag(self):
+        resp = self.client.get(reverse('template_tag'))
         self.assertContains(resp, 'test content')
+
+    def test_bad_arg_count(self):
+        self.assertRaises(TemplateSyntaxError, self.client.get,
+                          reverse('bad_arg_count'))
+        

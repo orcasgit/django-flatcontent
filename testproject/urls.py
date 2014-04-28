@@ -4,7 +4,10 @@ from django.views.generic import TemplateView
 
 urlpatterns = patterns(
     '',
-    url(r'^show-flatcontent/$',
-        TemplateView.as_view(template_name='content.html'),
-        name='show_flatcontent')
+    url(r'^template-tag/$',
+        TemplateView.as_view(template_name='template_tag.html'),
+        name='template_tag'),
+    url(r'^bad_arg_count/$',
+        TemplateView.as_view(template_name='bad_arg_count.html'),
+        name='bad_arg_count')
 )
