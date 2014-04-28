@@ -41,8 +41,8 @@ def do_flatcontent(parser, token):
         return FlatContentNode(bits[1])
     elif len_bits == 4:
         if bits[2] != 'as':
-            raise TemplateSyntaxError("The second argument to flatcontent "
-                                      "tag must be 'as'")
+            raise template.TemplateSyntaxError("The second argument to "
+                                               "flatcontent tag must be 'as'")
         return FlatContentNode(bits[1], bits[3])
 
 register.tag('flatcontent', do_flatcontent)

@@ -21,4 +21,8 @@ class TestFlatContent(TestCase):
     def test_bad_arg_count(self):
         self.assertRaises(TemplateSyntaxError, self.client.get,
                           reverse('bad_arg_count'))
+
+    def test_bad_second_arg(self):
+        self.assertRaises(TemplateSyntaxError, self.client.get,
+                          reverse('bad_second_arg'))
         

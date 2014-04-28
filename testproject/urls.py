@@ -9,5 +9,8 @@ urlpatterns = patterns(
         name='template_tag'),
     url(r'^bad_arg_count/$',
         TemplateView.as_view(template_name='bad_arg_count.html'),
-        name='bad_arg_count')
+        name='bad_arg_count'),
+    url(r'^bad_second_arg/$',
+        TemplateView.as_view(template_name='bad_second_arg.html'),
+        name='bad_second_arg')
 )
