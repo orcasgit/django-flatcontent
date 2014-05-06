@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'FlatContent'
         db.create_table(u'flatcontent_flatcontent', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=255)),
             ('content', self.gf('django.db.models.fields.TextField')()),
         ))
@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
         u'flatcontent.flatcontent': {
             'Meta': {'object_name': 'FlatContent'},
             'content': ('django.db.models.fields.TextField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
         }
     }
