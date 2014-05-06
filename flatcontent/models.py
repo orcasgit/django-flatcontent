@@ -47,8 +47,11 @@ class FlatContent(models.Model):
         except cls.DoesNotExist:
             try:
                 # Fallback to the non-site specific flatcontent
-                fc = cls.objects.get(slug=slug)
                 key = cls.key_from_slug(slug)
+                cache_value = cache.get(key)
+                if cache_value:
+                    return cache_value
+                fc = cls.objects.get(slug=slug, site=None)
             except:
                 return ''
         cache.set(key, fc.content)

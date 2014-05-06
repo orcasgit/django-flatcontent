@@ -5,16 +5,17 @@ from django.test import TestCase
 from nose.tools import eq_
 
 from flatcontent.models import FlatContent
-from .basefactory import FlatContentFactory
+from .basefactory import FlatContentFactory, SiteFactory
 
 
 class TestFlatContent(TestCase):
 
     def setUp(self):
+        self.site = Site.objects.get()
         self.flat_content = FlatContentFactory.create(
             slug='test-content', site=None, content='test content')
         self.flat_site_content = FlatContentFactory.create(
-            slug='test-content', site=Site.objects.get(),
+            slug='test-content', site=self.site,
             content='test content with site')
         self.flat_content.save()
         self.flat_site_content.save()
@@ -25,6 +26,14 @@ class TestFlatContent(TestCase):
         eq_('flatcontent_1_test-content',
             FlatContent.key_from_slug(self.flat_site_content.slug,
                                       site_id=self.flat_site_content.site.id))
+
+    def test_get(self):
+        eq_('test content', FlatContent.get('test-content'))
+        eq_('test content with site',
+            FlatContent.get('test-content', site_id=self.site.id))
+        site = SiteFactory.create()
+        site.save()
+        eq_('test content', FlatContent.get('test-content', site_id=site.id))
 
     def test_template_tag(self):
         resp = self.client.get(reverse('template_tag'))
