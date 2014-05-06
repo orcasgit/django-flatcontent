@@ -1,11 +1,16 @@
+from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.db import models
 
 class FlatContent(models.Model):
-    slug = models.SlugField(max_length=255, unique=True, help_text='The name by which the template author retrieves this content.')
+    slug = models.SlugField(max_length=255, unique=False,
+                            help_text='The name by which the template author '
+                                      'retrieves this content.')
+    site = models.ForeignKey(Site, blank=True, null=True)
     content = models.TextField()
 
     class Meta:
+        unique_together = ('slug', 'site',)
         verbose_name_plural = 'flat content'
 
     def __unicode__(self):
@@ -13,32 +18,39 @@ class FlatContent(models.Model):
 
     def save(self):
         super(FlatContent, self).save()
-        cache.delete(self.key_from_slug(self.slug))
+        cache.delete(self.key_from_slug(
+            self.slug, site_id=self.site.id if self.site else None))
 
     def delete(self):
-        cache.delete(self.key_from_slug(self.slug))
+        cache.delete(self.key_from_slug(
+            self.slug, site_id=self.site.id if self.site else None))
         super(FlatContent, self).delete()
 
     # Helper method to get key for caching
-    def key_from_slug(slug):
-        return 'flatcontent_%s' % (slug)
+    def key_from_slug(slug, site_id=None):
+        return 'flatcontent_%s_%s' % (site_id, slug)
     key_from_slug = staticmethod(key_from_slug)
 
     # Class method with caching
-    def get(cls, slug):
+    def get(cls, slug, site_id=None):
         """
         Checks if key is in cache, otherwise performs database lookup and
         inserts into cache.
         """
-        key = cls.key_from_slug(slug)
+        key = cls.key_from_slug(slug, site_id=site_id)
         cache_value = cache.get(key)
         if cache_value:
             return cache_value
 
         try:
-            fc = cls.objects.get(slug=slug)
+            fc = cls.objects.get(slug=slug, site=site_id)
         except cls.DoesNotExist:
-            return ''
+            try:
+                # Fallback to the non-site specific flatcontent
+                fc = cls.objects.get(slug=slug)
+                key = cls.key_from_slug(slug)
+            except:
+                return ''
         cache.set(key, fc.content)
         return fc.content
     get = classmethod(get)
