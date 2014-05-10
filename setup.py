@@ -10,7 +10,7 @@ setup(
     author='Oregon Center for Applied Science',
     author_email='support@orcasinc.com',
     url='http://github.com/orcasgit/django-flatcontent',
-    install_requires=["distribute"] + required,
+    install_requires=["setuptools"] + required,
     download_url='http://github.com/orcasgit/django-flatcontent/downloads',
     license='BSD',
     packages=find_packages(exclude=['ez_setup']),
