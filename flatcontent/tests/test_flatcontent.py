@@ -40,6 +40,17 @@ class TestFlatContent(TestCase):
             eq_('test content', FlatContent.get('test-content'))
             eq_(mock_objects_get.call_count, 0)
 
+    def test_get_fallback(self):
+        # Test the non site-specific fallback
+        FlatContentFactory.create(
+            slug='test-content2', site=None, content='test content2').save()
+        eq_('test content2',
+            FlatContent.get('test-content2', site_id=self.site.id))
+
+    def test_get_not_found(self):
+        # Test the flatcontent doesn't exist
+        eq_('', FlatContent.get('not-found'))
+
     def test_template_tag(self):
         resp = self.client.get(reverse('template_tag'))
         self.assertContains(resp, 'test content')
