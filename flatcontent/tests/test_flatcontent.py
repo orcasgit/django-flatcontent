@@ -2,6 +2,7 @@ from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.template import TemplateSyntaxError
 from django.test import TestCase
+from mock import patch
 from nose.tools import eq_
 
 from flatcontent.models import FlatContent
@@ -34,6 +35,10 @@ class TestFlatContent(TestCase):
         site = SiteFactory.create()
         site.save()
         eq_('test content', FlatContent.get('test-content', site_id=site.id))
+        # Check that the items are now in the cache
+        with patch.object(FlatContent.objects, 'get') as mock_objects_get:
+            eq_('test content', FlatContent.get('test-content'))
+            eq_(mock_objects_get.call_count, 0)
 
     def test_template_tag(self):
         resp = self.client.get(reverse('template_tag'))
