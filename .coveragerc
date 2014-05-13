@@ -1,0 +1,4 @@
+# .coveragerc to control coverage.py
+[run]
+source=flatcontent
+omit = testproject/*,.tox/*,*/python?.?/*,*/pypy/*,flatcontent/migrations/*
