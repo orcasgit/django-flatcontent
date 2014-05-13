@@ -1,4 +1,4 @@
 # .coveragerc to control coverage.py
 [run]
 source=flatcontent
-omit = testproject/*,.tox/*,*/python?.?/*,*/pypy/*,flatcontent/migrations/*
+omit = testproject/*,.tox/*,*/python?.?/*,*/pypy/*,flatcontent/migrations/*,flatcontent/__init__.py,flatcontent/tests/__init__.py,flatcontent/templatetags/__init__.py
