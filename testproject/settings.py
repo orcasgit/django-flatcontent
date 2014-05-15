@@ -17,12 +17,14 @@ DATABASES = {
     }
 }
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'flatcontent',
-    'django_nose'
+    'django_nose',
+    'import_export',
 )
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -37,6 +39,5 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--logging-clear-handlers',
-    '--tests=flatcontent.tests.test_flatcontent',
     '-s',
 ]
