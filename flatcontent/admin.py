@@ -11,8 +11,8 @@ class FlatContentResource(resources.ModelResource):
 
 
 class FlatContentAdmin(ImportExportModelAdmin):
-    list_display = ('slug', 'content')
-    ordering = ('slug',)
+    list_display = ('slug', 'site', 'content',)
+    ordering = ('slug', 'site',)
     resource_class = FlatContentResource
 
 

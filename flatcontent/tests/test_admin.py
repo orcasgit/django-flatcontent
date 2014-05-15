@@ -44,8 +44,9 @@ class TestLogAdmin(TestCase):
         change_url = self._admin_url(FlatContent, flatcontent)
         res = self.client.get(list_url)
         self.assertContains(res, '1 flat content')
-        self.assertContains(res, flatcontent.slug)
-        self.assertContains(res, flatcontent.content)
+        self.assertRegexpMatches(res.content, '<tr.*%s.*%s.*%s.*</tr>' % (
+          flatcontent.slug, flatcontent.site, flatcontent.content
+        ))
         if self.django_version[0] >= 1 and self.django_version[1] > 4:
             self.assertContains(res, change_url)
         else:
