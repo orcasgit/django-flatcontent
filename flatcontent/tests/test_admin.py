@@ -1,5 +1,5 @@
 """
-Tests in this file are for testing everything in log.admin
+Tests in this file are for testing everything in flatcontent.admin
 """
 import django
 
@@ -14,7 +14,7 @@ from flatcontent.models import FlatContent
 from .basefactory import FlatContentFactory, UserFactory
 
 
-class TestLogAdmin(TestCase):
+class TestFlatContentAdmin(TestCase):
     """ Test all the flatcontent admin classes """
 
     def setUp(self):
