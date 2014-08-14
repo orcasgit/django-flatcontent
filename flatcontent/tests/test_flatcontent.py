@@ -2,6 +2,7 @@ from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.template import TemplateSyntaxError
 from django.test import TestCase
+from django.utils import translation
 from mock import patch
 from nose.tools import eq_
 
@@ -22,11 +23,14 @@ class TestFlatContent(TestCase):
         self.flat_site_content.save()
 
     def test_cache_key(self):
-        eq_('flatcontent_None_test-content',
+        eq_('flatcontent_None_test-content_en-us',
             FlatContent.key_from_slug(self.flat_content.slug))
-        eq_('flatcontent_1_test-content',
+        eq_('flatcontent_1_test-content_en-us',
             FlatContent.key_from_slug(self.flat_site_content.slug,
                                       site_id=self.flat_site_content.site.id))
+        translation.activate('tr')
+        eq_('flatcontent_None_test-content_tr',
+            FlatContent.key_from_slug(self.flat_content.slug))
 
     def test_get(self):
         eq_('test content', FlatContent.get('test-content'))

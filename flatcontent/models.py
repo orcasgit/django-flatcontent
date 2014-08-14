@@ -1,6 +1,8 @@
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.db import models
+from django.utils import translation
+
 
 class FlatContent(models.Model):
     slug = models.SlugField(max_length=255, unique=False,
@@ -28,7 +30,8 @@ class FlatContent(models.Model):
 
     # Helper method to get key for caching
     def key_from_slug(slug, site_id=None):
-        return 'flatcontent_%s_%s' % (site_id, slug)
+        lang = translation.get_language()
+        return 'flatcontent_%s_%s_%s' % (site_id, slug, lang)
     key_from_slug = staticmethod(key_from_slug)
 
     # Class method with caching
@@ -57,4 +60,3 @@ class FlatContent(models.Model):
         cache.set(key, fc.content)
         return fc.content
     get = classmethod(get)
-
