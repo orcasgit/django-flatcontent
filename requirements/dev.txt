@@ -1,4 +1,4 @@
 -r test.txt
 
-django==1.7
+django==1.7.1
 south==1.0
