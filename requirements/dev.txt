@@ -1,4 +1,3 @@
 -r test.txt
 
-django>=1.7.0,<=1.8.0
-south>=1.0.0,<=1.1.0
+django<1.9
