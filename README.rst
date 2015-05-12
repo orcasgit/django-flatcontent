@@ -29,6 +29,8 @@ Installation
 2. Add ``flatcontent`` to your ``INSTALLED_APPS``.
 3. Run the command ``manage.py syncdb`` to install the models.
 
+NOTE: If you are using Django < 1.7, you will need to install at least version 1 of South
+
 Usage
 =====
 
