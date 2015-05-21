@@ -1,7 +1,7 @@
 -r base.txt
 
 django-nose>=1.4,<1.5
-coverage>=3.7,<3.8
-factory-boy>=2.4,<2.5
-mock>=1.0,<1.1
-tox>=1.8,<1.10
+coverage<3.8
+factory-boy<2.6
+mock<1.1
+tox<3
