@@ -18,8 +18,8 @@ class FlatContent(models.Model):
     def __unicode__(self):
         return self.slug
 
-    def save(self):
-        super(FlatContent, self).save()
+    def save(self, *args, **kwargs):
+        super(FlatContent, self).save(*args, **kwargs)
         cache.delete(self.key_from_slug(
             self.slug, site_id=self.site.id if self.site else None))
 

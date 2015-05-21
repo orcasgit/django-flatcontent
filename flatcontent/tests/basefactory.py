@@ -5,8 +5,9 @@ from django.contrib.sites.models import Site
 from flatcontent.models import FlatContent
 
 
-class UserFactory(factory.Factory):
-    FACTORY_FOR = User
+class UserFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = 'auth.User'
 
     username = factory.Sequence(lambda n: 'username{0}'.format(n))
     password = 'password'
@@ -21,11 +22,14 @@ class UserFactory(factory.Factory):
         return user
 
 
-class FlatContentFactory(factory.Factory):
-    FACTORY_FOR = FlatContent
+class FlatContentFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = 'flatcontent.FlatContent'
 
     slug = factory.Sequence(lambda n: 'slug{0}'.format(n))
     content = factory.Sequence(lambda n: 'content{0}'.format(n))
 
-class SiteFactory(factory.Factory):
-    FACTORY_FOR = Site
+
+class SiteFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = 'sites.Site'

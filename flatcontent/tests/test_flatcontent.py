@@ -14,7 +14,7 @@ class TestFlatContent(TestCase):
 
     def setUp(self):
         self.site = Site.objects.get()
-        self.flat_content = FlatContentFactory.create(
+        self.flat_content = FlatContentFactory(
             slug='test-content', site=None, content='test content')
         self.flat_site_content = FlatContentFactory.create(
             slug='test-content', site=self.site,
