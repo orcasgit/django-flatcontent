@@ -1,1 +1,2 @@
 django-import-export>=0.2.6,<0.3
+git+ssh://git@github.com/orcasgit/django-template-field@master
