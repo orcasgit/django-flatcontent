@@ -2,6 +2,7 @@ from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.db import models
 from django.utils import translation
+from templatefield.fields import TemplateTextField
 
 
 class FlatContent(models.Model):
@@ -9,7 +10,7 @@ class FlatContent(models.Model):
                             help_text='The name by which the template author '
                                       'retrieves this content.')
     site = models.ForeignKey(Site, blank=True, null=True)
-    content = models.TextField()
+    content = TemplateTextField()
 
     class Meta:
         unique_together = ('slug', 'site',)
