@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.db import models
 from django.utils import translation
 from templatefield.fields import TemplateTextField
+from templatefield.managers import RenderTemplateManager
 
 
 class FlatContent(models.Model):
@@ -11,6 +12,9 @@ class FlatContent(models.Model):
                                       'retrieves this content.')
     site = models.ForeignKey(Site, blank=True, null=True)
     content = TemplateTextField()
+
+    default = models.Manager()
+    objects = RenderTemplateManager()
 
     class Meta:
         unique_together = ('slug', 'site',)
