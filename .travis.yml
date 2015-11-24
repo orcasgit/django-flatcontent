@@ -9,10 +9,9 @@ env:
   - TOX_ENV=py32-1.8.X
   - TOX_ENV=py27-1.8.X
 install:
-  - pip install coveralls
+  - pip install codecov
   - pip install tox
 script:
-  - tox -e $TOX_ENV -- --with-coverage --cover-package=flatcontent
-  - coverage report -m
+  - tox -e $TOX_ENV
 after_success:
-  coveralls --verbose
+  - codecov
