@@ -4,29 +4,10 @@ language: python
 python: 3.4
 env:
   - TOX_ENV=pypy-1.8.X
-  - TOX_ENV=pypy-1.7.X
-  - TOX_ENV=pypy-1.5.X
-  - TOX_ENV=pypy-1.4.X
   - TOX_ENV=py34-1.8.X
-  - TOX_ENV=py34-1.7.X
-  - TOX_ENV=py34-1.6.X
-  - TOX_ENV=py34-1.5.X
   - TOX_ENV=py33-1.8.X
-  - TOX_ENV=py33-1.7.X
-  - TOX_ENV=py33-1.6.X
-  - TOX_ENV=py33-1.5.X
   - TOX_ENV=py32-1.8.X
-  - TOX_ENV=py32-1.7.X
-  - TOX_ENV=py32-1.6.X
-  - TOX_ENV=py32-1.5.X
   - TOX_ENV=py27-1.8.X
-  - TOX_ENV=py27-1.7.X
-  - TOX_ENV=py27-1.6.X
-  - TOX_ENV=py27-1.5.X
-  - TOX_ENV=py27-1.4.X
-  - TOX_ENV=py26-1.6.X
-  - TOX_ENV=py26-1.5.X
-  - TOX_ENV=py26-1.4.X
 install:
   - pip install coveralls
   - pip install tox
