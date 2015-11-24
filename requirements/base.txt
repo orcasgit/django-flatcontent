@@ -1,2 +1,2 @@
-django-import-export>=0.2.6,<0.3
+django-import-export>=0.2.6,<=0.2.7
 django-template-field>=0.1.0

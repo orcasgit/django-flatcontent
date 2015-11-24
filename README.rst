@@ -25,11 +25,9 @@ Features
 Installation
 ============
 
-1. Add the ``flatcontent`` directory to your Python path.
+1. ``pip install flatcontent``.
 2. Add ``flatcontent`` to your ``INSTALLED_APPS``.
-3. Run the command ``manage.py syncdb`` to install the models.
-
-NOTE: If you are using Django < 1.7, you will need to install at least version 1 of South
+3. Run the command ``manage.py migrate`` to install the models.
 
 Usage
 =====
