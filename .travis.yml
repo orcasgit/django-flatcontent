@@ -1,22 +1,21 @@
----
-
 language: python
 python: 3.4
 env:
-  - TOX_ENV=pypy-1.8.X
-  - TOX_ENV=py35-1.8.X
-  - TOX_ENV=py34-1.8.X
-  - TOX_ENV=py33-1.8.X
-  - TOX_ENV=py32-1.8.X
-  - TOX_ENV=py27-1.8.X
+- TOX_ENV=pypy-1.8.X
+- TOX_ENV=py35-1.8.X
+- TOX_ENV=py34-1.8.X
+- TOX_ENV=py33-1.8.X
+- TOX_ENV=py32-1.8.X
+- TOX_ENV=py27-1.8.X
 before_install:
-  - pip install codecov
+- pip install codecov
 install:
-  - pip install tox
+- pip install tox
 script:
-  - tox -e $TOX_ENV
+- tox -e $TOX_ENV
 after_success:
-  - codecov
-
-# Allows us to use Travis's faster infrastructure
+- codecov
+notifications:
+  slack:
+    secure: G5uBvjssRXJSU/SqlddkVbNzcqvGh0VsdSLGg/zCLd8BVce4S1LbHCcz8oqtXGAxOksR+Kb3bvGa895ABfuEQv2ckidHFEq28aXi4WwiKII8Ak7qcvOVlquV/WxZlH9DGpymwqn2QHUxfuxR43uiD4YB6IV77a4BZ+Qrfsi4NYs=
 sudo: false
