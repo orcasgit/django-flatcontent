@@ -4,6 +4,7 @@ language: python
 python: 3.4
 env:
   - TOX_ENV=pypy-1.8.X
+  - TOX_ENV=py35-1.8.X
   - TOX_ENV=py34-1.8.X
   - TOX_ENV=py33-1.8.X
   - TOX_ENV=py32-1.8.X
@@ -15,3 +16,6 @@ script:
   - tox -e $TOX_ENV
 after_success:
   - codecov
+
+# Allows us to use Travis's faster infrastructure
+sudo: false
