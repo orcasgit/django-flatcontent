@@ -14,6 +14,7 @@ class FlatContentAdmin(ImportExportModelAdmin):
     list_display = ('slug', 'site', 'content',)
     ordering = ('slug', 'site',)
     resource_class = FlatContentResource
+    search_fields = ['slug']
 
 
 admin.site.register(FlatContent, FlatContentAdmin)
