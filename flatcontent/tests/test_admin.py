@@ -1,8 +1,6 @@
 """
 Tests in this file are for testing everything in flatcontent.admin
 """
-import django
-
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
@@ -24,7 +22,6 @@ class TestFlatContentAdmin(TestCase):
         self.user.is_superuser = True
         self.user.save()
         self.site = Site.objects.get()
-        self.django_version = [int(v) for v in django.get_version().split('.')]
 
     def test_flatcontent_list(self):
         """ Test the list view for the FlatContent admin """
@@ -44,14 +41,7 @@ class TestFlatContentAdmin(TestCase):
         change_url = self._admin_url(FlatContent, flatcontent)
         res = self.client.get(list_url)
         self.assertContains(res, '1 flat content')
-        self.assertRegexpMatches(res.content.decode(), '<tr.*%s.*%s.*%s.*</tr>' % (
-          flatcontent.slug, flatcontent.site, flatcontent.content
-        ))
-        if self.django_version[0] >= 1 and self.django_version[1] > 4:
-            self.assertContains(res, change_url)
-        else:
-            # Django 1.4 used relative change url
-            self.assertContains(res, '%i/' % flatcontent.id)
+        self.assertContains(res, change_url)
         self.assertContains(res, add_url)
 
     def _admin_url(self, model, obj=None):
