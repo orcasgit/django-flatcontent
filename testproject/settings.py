@@ -35,7 +35,18 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'testproject.urls'
 SECRET_KEY = 's%(r1=t8io(=flnk%!si__eh-nhhazlou!p-+0^fnp)8o(mn&y'
-TEMPLATE_DIRS = (os.path.join(PROJECT_PATH, 'templates'),)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(PROJECT_PATH, 'templates')],
+        'OPTIONS': {
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
+        },
+    },
+]
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--logging-clear-handlers',

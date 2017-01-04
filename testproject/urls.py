@@ -1,13 +1,12 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
 
 admin.autodiscover()
 
-urlpatterns = patterns(
-    '',
-    (r'^admin/', include(admin.site.urls)),
+urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^template-tag/$',
         TemplateView.as_view(template_name='template_tag.html'),
         name='template_tag'),
@@ -20,4 +19,4 @@ urlpatterns = patterns(
     url(r'^bad_second_arg/$',
         TemplateView.as_view(template_name='bad_second_arg.html'),
         name='bad_second_arg')
-)
+]
