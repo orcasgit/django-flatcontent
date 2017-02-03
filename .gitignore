@@ -1,6 +1,7 @@
 *.pyc
 *~
 .tox
+setup.cfg
 env
 build
 dist
