@@ -45,14 +45,14 @@ class FlatContent(models.Model):
         Checks if key is in cache, otherwise performs database lookup and
         inserts into cache.
         """
-        ctx = context or {}
         key = cls.key_from_slug(slug, site_id=site_id)
         cache_value = cache.get(key)
         if cache_value:
             return cache_value
 
+        manager = cls.objects.with_context(context or {})
         try:
-            fc = cls.objects.with_context(ctx).get(slug=slug, site=site_id)
+            fc = manager.get(slug=slug, site=site_id)
         except cls.DoesNotExist:
             try:
                 # Fallback to the non-site specific flatcontent
@@ -60,7 +60,7 @@ class FlatContent(models.Model):
                 cache_value = cache.get(key)
                 if cache_value:
                     return cache_value
-                fc = cls.objects.with_context(ctx).get(slug=slug, site=None)
+                fc = manager.get(slug=slug, site=None)
             except:
                 return ''
         cache.set(key, fc.content)
