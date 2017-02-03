@@ -55,6 +55,19 @@ class TestFlatContent(TestCase):
         # Test the flatcontent doesn't exist
         eq_('', FlatContent.get('not-found'))
 
+    def test_get_with_context(self):
+        flatcontent = FlatContentFactory.create(
+            slug='test-tpl', site=None, content='Hi {{ name }}')
+
+        assert FlatContent.get('test-tpl') == 'Hi '
+
+        # Clear the cache
+        flatcontent.save()
+
+        assert FlatContent.get('test-tpl', context={
+            'name': 'Brad',
+        }) == 'Hi Brad'
+
     def test_template_tag(self):
         resp = self.client.get(reverse('template_tag'))
         self.assertContains(resp, 'test content')
