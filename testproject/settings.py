@@ -49,6 +49,7 @@ TEMPLATES = [
 ]
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
+    '--detailed-errors',
     '--logging-clear-handlers',
     '-s',
 ]
