@@ -40,13 +40,13 @@ class FlatContent(models.Model):
     key_from_slug = staticmethod(key_from_slug)
 
     # Class method with caching
+    @classmethod
     def get(cls, slug, site_id=None, context=None):
         """
         Checks if key is in cache, otherwise performs database lookup and
         inserts into cache.
         """
-        key = cls.key_from_slug(slug, site_id=site_id)
-        cache_value = cache.get(key)
+        key, cache_value = cls._get_cached(slug, site_id, context)
         if cache_value:
             return cache_value
 
@@ -56,13 +56,18 @@ class FlatContent(models.Model):
         except cls.DoesNotExist:
             try:
                 # Fallback to the non-site specific flatcontent
-                key = cls.key_from_slug(slug)
-                cache_value = cache.get(key)
+                key, cache_value = cls._get_cached(slug, context=context)
                 if cache_value:
                     return cache_value
                 fc = manager.get(slug=slug, site=None)
             except:
                 return ''
-        cache.set(key, fc.content)
+        if not context:
+            cache.set(key, fc.content)
         return fc.content
-    get = classmethod(get)
+
+    @classmethod
+    def _get_cached(cls, slug, site_id=None, context=None):
+        key = cls.key_from_slug(slug, site_id=site_id)
+        cache_value = None if context else cache.get(key)
+        return key, cache_value

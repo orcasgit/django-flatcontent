@@ -56,14 +56,14 @@ class TestFlatContent(TestCase):
         eq_('', FlatContent.get('not-found'))
 
     def test_get_with_context(self):
+        """
+        Check that get works with or without context, and no cache is used
+        with context
+        """
         flatcontent = FlatContentFactory.create(
             slug='test-tpl', site=None, content='Hi {{ name }}')
 
         assert FlatContent.get('test-tpl') == 'Hi '
-
-        # Clear the cache
-        flatcontent.save()
-
         assert FlatContent.get('test-tpl', context={
             'name': 'Brad',
         }) == 'Hi Brad'
