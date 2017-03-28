@@ -8,7 +8,7 @@ python:
   - "3.5"
 install:
   - pip install codecov tox-travis
-script: tox -- --with-coverage --cover-package=flatcontent
+script: tox -- --with-coverage --cover-branches --cover-package=flatcontent
 after_success: codecov
 notifications:
   slack:
