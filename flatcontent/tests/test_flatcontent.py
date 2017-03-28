@@ -76,6 +76,17 @@ class TestFlatContent(TestCase):
         resp = self.client.get(reverse('template_tag_with_site'))
         self.assertContains(resp, 'test content with site')
 
+    def test_template_tag_with_extra_ctx(self):
+        FlatContentFactory(
+            slug='test-content-with-extra-ctx',
+            site=None,
+            content='test content with {{ var1 }} {{ var2 }}',
+        )
+
+        resp = self.client.get(reverse('template_tag_with_extra_ctx'))
+
+        self.assertContains(resp, 'test content with extra ctx')
+
     def test_bad_arg_count(self):
         self.assertRaises(TemplateSyntaxError, self.client.get,
                           reverse('bad_arg_count'))
