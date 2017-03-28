@@ -1,6 +1,9 @@
 *.pyc
 *~
+.coverage
 .tox
+coverage.xml
+htmlcov
 setup.cfg
 env
 build
