@@ -20,6 +20,7 @@ Features
 
 * Simple FlatContent model
 * Template tag for pulling FlatContent into templates
+* Template rendering of flatcontent items
 * Caching of FlatContent for performance
 
 Installation
@@ -52,3 +53,11 @@ text through the `textile` filter::
         {% flatcontent footer as content %}
         {{ content|textile }}
     </div>
+
+Add context for flatcontent rendering using the `with` keyword. For example, if
+you have a flatcontent item with the content `Homer {{ last_name }}`, you could
+use the following in your django template to achieve `Homer Simpson` as the
+output::
+
+    {% load flatcontent_tags %}
+    {% flatcontent homer-simpson with last_name='Simpson' %}
