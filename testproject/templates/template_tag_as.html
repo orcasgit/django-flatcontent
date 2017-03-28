@@ -1,0 +1,3 @@
+{% load flatcontent_tags markup_tags %}
+{% flatcontent test-content as test_content %}
+{{ test_content|apply_markup:"textile" }}

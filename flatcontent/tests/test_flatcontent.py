@@ -72,6 +72,11 @@ class TestFlatContent(TestCase):
         resp = self.client.get(reverse('template_tag'))
         self.assertContains(resp, 'test content')
 
+    def test_template_tag_as(self):
+        resp = self.client.get(reverse('template_tag_as'))
+
+        self.assertContains(resp, '<p>test content</p>')
+
     def test_template_tag_with_site(self):
         resp = self.client.get(reverse('template_tag_with_site'))
         self.assertContains(resp, 'test content with site')
@@ -87,10 +92,35 @@ class TestFlatContent(TestCase):
 
         self.assertContains(resp, 'test content with extra ctx')
 
+    def test_missing_as(self):
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('missing_as'))
+
+        self.assertEqual(
+            tse.exception.message,
+            "The argument after 'as' should be a name for the context var",
+        )
+
+    def test_missing_with(self):
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('missing_with'))
+
+        self.assertEqual(
+            tse.exception.message,
+            "You must include key=value pairs after 'with'",
+        )
+
     def test_bad_arg_count(self):
-        self.assertRaises(TemplateSyntaxError, self.client.get,
-                          reverse('bad_arg_count'))
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('bad_arg_count'))
+
+        self.assertEqual(
+            tse.exception.message,
+            "The flatcontent tag requires 1 or 3+ arguments",
+        )
 
     def test_bad_second_arg(self):
-        self.assertRaises(TemplateSyntaxError, self.client.get,
-                          reverse('bad_second_arg'))
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('bad_second_arg'))
+
+        self.assertEqual(tse.exception.message, "Bad arguments supplied")
