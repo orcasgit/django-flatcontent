@@ -6,6 +6,8 @@ register = template.Library()
 
 class FlatContentNode(template.Node):
     errors = {
+        'arg-count': "The flatcontent tag requires 1 or 3+ arguments",
+        'bad-args': "Bad arguments supplied",
         'for-site': {
             'missing': "The argument after 'for-site' should be a site",
         },
@@ -69,8 +71,7 @@ def do_flatcontent(parser, token):
     """
     bits = token.split_contents()[1:]
     if len(bits) in (0, 2):
-        raise template.TemplateSyntaxError(
-            "The flatcontent tag requires 1 or 3+ arguments")
+        raise template.TemplateSyntaxError(FlatContentNode.errors['arg-count'])
 
     slug = bits.pop(0)
 
@@ -81,15 +82,17 @@ def do_flatcontent(parser, token):
             bit_idx = bits.index(bit)
             bits.remove(bit)
             if kwarg == 'with_':
-                kwargs[kwarg] = [b.split('=') for b in bits[bit_idx:]]
-                if kwargs[kwarg]:
+                split_with = [b.split('=') for b in bits[bit_idx:]]
+                if split_with:
                     kwargs['with_'] = {
                         warg[0]: parser.compile_filter(warg[1])
-                        for warg in kwargs['with_']
+                        for warg in split_with
                     }
                     bits = []
                 else:
-                    raise IndexError()
+                    raise template.TemplateSyntaxError(
+                        FlatContentNode.errors['with']['missing']
+                    )
             else:
                 kwargs[kwarg] = bits.pop(bit_idx)
         except ValueError:
@@ -101,7 +104,7 @@ def do_flatcontent(parser, token):
 
     # If there are unparsed tokens left, there were bad arguments supplied
     if bits:
-        raise template.TemplateSyntaxError("Bad arguments supplied")
+        raise template.TemplateSyntaxError(FlatContentNode.errors['bad-args'])
 
     return FlatContentNode(slug, **kwargs)
 

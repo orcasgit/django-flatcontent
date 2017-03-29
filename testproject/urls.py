@@ -23,6 +23,9 @@ urlpatterns = [
             context={'ctx': 'Ctx'}
         ),
         name='template_tag_with_extra_ctx'),
+    url(r'^template-tag-all-elements/$',
+        TemplateView.as_view(template_name='template_tag_all_elements.html'),
+        name='template_tag_all_elements'),
     url(r'^missing-as/$',
         TemplateView.as_view(template_name='missing_as.html'),
         name='missing_as'),

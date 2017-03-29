@@ -94,6 +94,25 @@ class TestFlatContent(TestCase):
 
         self.assertContains(resp, 'test content with extra ctx')
 
+    def test_template_tag_all_elements(self):
+        FlatContentFactory(
+            slug='test-content-all-elements',
+            site=None,
+            content='unused',
+        )
+        FlatContentFactory(
+            slug='test-content-all-elements',
+            site=self.site,
+            content='test content with {{ var1 }} {{ var2 }}',
+        )
+
+        resp = self.client.get(reverse('template_tag_all_elements'))
+
+        self.assertNotContains(resp, 'unused')
+        self.assertContains(resp, '<p>test content with extra ctx1</p>')
+        self.assertContains(resp, '<p>test content with extra ctx2</p>')
+        self.assertContains(resp, '<p>test content with extra ctx3</p>')
+
     def test_missing_as(self):
         with self.assertRaises(TemplateSyntaxError) as tse:
             self.client.get(reverse('missing_as'))
