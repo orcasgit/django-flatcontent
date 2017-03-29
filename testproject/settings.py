@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'flatcontent',
     'django_nose',
     'import_export',
+    'django_markup',
 )
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',

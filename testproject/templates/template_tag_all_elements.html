@@ -1,0 +1,9 @@
+{% load flatcontent_tags markup_tags %}
+
+
+{% flatcontent test-content-all-elements with var1='extra' var2='ctx1' for-site 1 as ctx1 %}
+{{ ctx1|apply_markup:"textile" }}
+{% flatcontent test-content-all-elements for-site 1 with var1='extra' var2='ctx2' as ctx2 %}
+{{ ctx2|apply_markup:"textile" }}
+{% flatcontent test-content-all-elements for-site 1 as ctx3 with var1='extra' var2='ctx3' %}
+{{ ctx3|apply_markup:"textile" }}

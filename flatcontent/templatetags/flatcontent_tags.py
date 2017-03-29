@@ -5,63 +5,107 @@ from flatcontent.models import FlatContent
 register = template.Library()
 
 class FlatContentNode(template.Node):
-    def __init__(self, slug, context_var=None, site_id=None):
+    errors = {
+        'arg-count': "The flatcontent tag requires 1 or 3+ arguments",
+        'bad-args': "Bad arguments supplied",
+        'for-site': {
+            'missing': "The argument after 'for-site' should be a site",
+        },
+        'as': {
+            'missing': (
+                "The argument after 'as' should be a name for the context var"
+            ),
+        },
+        'with': {
+            'missing': "You must include key=value pairs after 'with'",
+        }
+    }
+
+    def __init__(self, slug, as_=None, for_site=None, with_=None):
         self.slug = slug
-        self.context_var = context_var
-        self.site_id = site_id
+        self.as_ = as_
+        self.for_site = for_site
+        self.with_ = with_ or {}
 
     def render(self, context):
-        site_id = self.site_id
-        if self.site_id != None:
+        site_id = self.for_site
+        if self.for_site != None:
             site_id = template.Variable(site_id).resolve(context)
 
-        flat_content = FlatContent.get(slug=self.slug, site_id=site_id)
-        if not self.context_var:
+        flat_content = FlatContent.get(
+            slug=self.slug,
+            site_id=site_id,
+            context={
+                key: val.resolve(context)
+                for key, val in self.with_.items()
+            },
+        )
+        if not self.as_:
             return flat_content
         else:
-            context[self.context_var] = flat_content
+            context[self.as_] = flat_content
         return ''
 
 def do_flatcontent(parser, token):
     """
     Retrieves content from the ``FlatContent`` model given a slug, and
-    optionally stores it in a context variable.
-    
+    optionally stores it in a context variable or adds context.
+
     Usage::
-    
+
         {% flatcontent [slug] %}
-    
+
     Optionally, you can specify a site using the following syntax::
 
         {% flatcontent [slug] for-site [site-id] %}
 
     To get the flatcontent into a variable for later use in the template or
     with tags and filters::
-    
+
         {% flatcontent [slug] as [varname] %}
-    
+
+    To add context for use in flatcontent templates, use `with`::
+
+        {% flatcontent [slug] with [contextvar1]=[contextval1] [contextvar2]=[contextval2] ... %}
+
     """
-    bits = token.split_contents()
-    len_bits = len(bits)
-    varname = None
-    if len_bits not in (2, 4, 6):
-        raise template.TemplateSyntaxError("The flatcontent tag requires "
-                                           "1, 3, or 5 arguments")
+    bits = token.split_contents()[1:]
+    if len(bits) in (0, 2):
+        raise template.TemplateSyntaxError(FlatContentNode.errors['arg-count'])
 
-    try:
-        site_id = bits[bits.index('for-site') + 1]
-    except ValueError:
-        site_id = None
+    slug = bits.pop(0)
 
-    try:
-        context_var = bits[bits.index('as') + 1]
-    except ValueError:
-        context_var = None
+    kwargs = {}
+    for kwarg in ['for_site', 'as_', 'with_']:
+        bit = kwarg.strip('_').replace('_', '-')
+        try:
+            bit_idx = bits.index(bit)
+            bits.remove(bit)
+            if kwarg == 'with_':
+                split_with = [b.split('=') for b in bits[bit_idx:]]
+                if split_with:
+                    kwargs['with_'] = {
+                        warg[0]: parser.compile_filter(warg[1])
+                        for warg in split_with
+                    }
+                    bits = []
+                else:
+                    raise template.TemplateSyntaxError(
+                        FlatContentNode.errors['with']['missing']
+                    )
+            else:
+                kwargs[kwarg] = bits.pop(bit_idx)
+        except ValueError:
+            kwargs[kwarg] = None
+        except IndexError:
+            raise template.TemplateSyntaxError(
+                FlatContentNode.errors[bit]['missing']
+            )
 
-    if len_bits > 2 and site_id is None and context_var is None:
-        raise template.TemplateSyntaxError("The second or fourth argument "
-                                           "should be 'as' or 'for-site'")
+    # If there are unparsed tokens left, there were bad arguments supplied
+    if bits:
+        raise template.TemplateSyntaxError(FlatContentNode.errors['bad-args'])
 
-    return FlatContentNode(bits[1], context_var=context_var, site_id=site_id)
+    return FlatContentNode(slug, **kwargs)
 
 register.tag('flatcontent', do_flatcontent)

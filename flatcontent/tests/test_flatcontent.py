@@ -72,14 +72,76 @@ class TestFlatContent(TestCase):
         resp = self.client.get(reverse('template_tag'))
         self.assertContains(resp, 'test content')
 
+    def test_template_tag_as(self):
+        resp = self.client.get(reverse('template_tag_as'))
+
+        self.assertContains(resp, '<p>test content</p>')
+        self.assertContains(resp, 'with first test content')
+        self.assertContains(resp, 'with last test content')
+
     def test_template_tag_with_site(self):
         resp = self.client.get(reverse('template_tag_with_site'))
         self.assertContains(resp, 'test content with site')
 
+    def test_template_tag_with_extra_ctx(self):
+        FlatContentFactory(
+            slug='test-content-with-extra-ctx',
+            site=None,
+            content='test content with {{ var1 }} {{ var2 }}',
+        )
+
+        resp = self.client.get(reverse('template_tag_with_extra_ctx'))
+
+        self.assertContains(resp, 'test content with extra ctx')
+
+    def test_template_tag_all_elements(self):
+        FlatContentFactory(
+            slug='test-content-all-elements',
+            site=None,
+            content='unused',
+        )
+        FlatContentFactory(
+            slug='test-content-all-elements',
+            site=self.site,
+            content='test content with {{ var1 }} {{ var2 }}',
+        )
+
+        resp = self.client.get(reverse('template_tag_all_elements'))
+
+        self.assertNotContains(resp, 'unused')
+        self.assertContains(resp, '<p>test content with extra ctx1</p>')
+        self.assertContains(resp, '<p>test content with extra ctx2</p>')
+        self.assertContains(resp, '<p>test content with extra ctx3</p>')
+
+    def test_missing_as(self):
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('missing_as'))
+
+        self.assertEqual(
+            tse.exception.args[0],
+            "The argument after 'as' should be a name for the context var",
+        )
+
+    def test_missing_with(self):
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('missing_with'))
+
+        self.assertEqual(
+            tse.exception.args[0],
+            "You must include key=value pairs after 'with'",
+        )
+
     def test_bad_arg_count(self):
-        self.assertRaises(TemplateSyntaxError, self.client.get,
-                          reverse('bad_arg_count'))
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('bad_arg_count'))
+
+        self.assertEqual(
+            tse.exception.args[0],
+            "The flatcontent tag requires 1 or 3+ arguments",
+        )
 
     def test_bad_second_arg(self):
-        self.assertRaises(TemplateSyntaxError, self.client.get,
-                          reverse('bad_second_arg'))
+        with self.assertRaises(TemplateSyntaxError) as tse:
+            self.client.get(reverse('bad_second_arg'))
+
+        self.assertEqual(tse.exception.args[0], "Bad arguments supplied")
