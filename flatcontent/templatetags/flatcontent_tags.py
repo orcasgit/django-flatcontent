@@ -75,8 +75,8 @@ def do_flatcontent(parser, token):
     slug = bits.pop(0)
 
     kwargs = {}
-    kwarg_map = {'for_site': 'for-site', 'as_': 'as', 'with_': 'with'}
-    for kwarg, bit in kwarg_map.items():
+    for kwarg in ['for_site', 'as_', 'with_']:
+        bit = kwarg.strip('_').replace('_', '-')
         try:
             bit_idx = bits.index(bit)
             bits.remove(bit)

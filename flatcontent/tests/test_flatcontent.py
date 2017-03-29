@@ -76,6 +76,8 @@ class TestFlatContent(TestCase):
         resp = self.client.get(reverse('template_tag_as'))
 
         self.assertContains(resp, '<p>test content</p>')
+        self.assertContains(resp, 'with first test content')
+        self.assertContains(resp, 'with last test content')
 
     def test_template_tag_with_site(self):
         resp = self.client.get(reverse('template_tag_with_site'))

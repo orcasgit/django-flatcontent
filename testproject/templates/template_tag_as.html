@@ -1,3 +1,11 @@
 {% load flatcontent_tags markup_tags %}
+
+
 {% flatcontent test-content as test_content %}
 {{ test_content|apply_markup:"textile" }}
+
+{% flatcontent test-content with var1='var1' var2='var2' as test_content2 %}
+with first {{ test_content2 }}
+
+{% flatcontent test-content as test_content3 with var1='var1' %}
+with last {{ test_content3 }}
